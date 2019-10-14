@@ -7,21 +7,30 @@
 #include "Executor.h"
 #include "Statement.h"
 
-enum class MetaCommandResult { Success, Unrecognized };
+enum class MetaCommandResult { Success, Unrecognized, Exit };
 
-MetaCommandResult doMetaCommand(std::string line) {
+MetaCommandResult parseMetaCommand(std::string line) {
   if (line == ".exit") {
-    exit(EXIT_SUCCESS);
+    return MetaCommandResult::Exit;
   } else {
     return MetaCommandResult::Unrecognized;
   }
 }
 
-int main() {
-  Table tbl;
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    absl::PrintF("Must supply a database filename.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  char* filename = argv[1];
+
+
+  Table tbl{filename};
 
   std::string line;
-  while (true) {
+  bool exiting = false;
+  while (!exiting) {
     // prompt for user input
     absl::PrintF("db > ");
     if (!std::getline(std::cin, line)) {
@@ -30,8 +39,11 @@ int main() {
     }
 
     if (absl::StartsWith(line, ".")) {
-      switch (doMetaCommand(line)) {
+      switch (parseMetaCommand(line)) {
         case MetaCommandResult::Success:
+          continue;
+        case MetaCommandResult::Exit:
+          exiting = true;
           continue;
         case MetaCommandResult::Unrecognized:
           absl::PrintF("Unrecognized command '%s'\n", line);

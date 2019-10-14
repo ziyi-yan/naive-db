@@ -12,7 +12,7 @@ Executor::ExecuteResult Executor::execute(Statement st, Table* tbl) {
   }
 }
 Executor::ExecuteResult Executor::execute_insert(Statement st, Table* tbl) {
-  if (tbl->num_rows >= Table::TABLE_MAX_ROWS) {
+  if (tbl->num_rows >= Pager::TABLE_MAX_ROWS) {
     return ExecuteResult::TableFull;
   }
 
