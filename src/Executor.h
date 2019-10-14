@@ -13,7 +13,6 @@ class Executor {
   ExecuteResult execute_insert(Statement st, Table* tbl);
   ExecuteResult execute_select(Statement st, Table* tbl);
   void printRow(Row row);
-  void printHeader();
 };
 
 #endif  // NAIVE_DB_EXECUTOR_H

@@ -17,8 +17,8 @@ struct Row {
   };
 
   uint32_t id;
-  char username[USERNAME_SIZE];
-  char email[EMAIL_SIZE];
+  char username[USERNAME_SIZE+1];
+  char email[EMAIL_SIZE+1];
 
   void serializeTo(uint8_t *dst);
   void deserializeFrom(uint8_t *src);

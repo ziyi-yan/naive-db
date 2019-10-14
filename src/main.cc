@@ -23,7 +23,7 @@ int main() {
   std::string line;
   while (true) {
     // prompt for user input
-    absl::PrintF("> ");
+    absl::PrintF("db > ");
     if (!std::getline(std::cin, line)) {
       // failed to get the next user input
       exit(EXIT_FAILURE);
@@ -46,7 +46,13 @@ int main() {
       case Statement::PrepareResult::SyntaxError:
         absl::PrintF("Syntax error. Could not parse statement.\n");
         continue;
-      case Statement::PrepareResult ::UnrecognizedStatement:
+      case Statement::PrepareResult::StringTooLong:
+        absl::PrintF("String is too long.\n");
+        continue;
+      case Statement::PrepareResult::NegativeID:
+        absl::PrintF("ID must be positive.\n");
+        continue;
+      case Statement::PrepareResult::UnrecognizedStatement:
         absl::PrintF("Unrecognized keyword at start of '%s'.\n", line);
         continue;
     }
@@ -57,7 +63,7 @@ int main() {
         absl::PrintF("Executed.\n");
         break;
       case Executor::ExecuteResult::TableFull:
-        absl::PrintF("Error: Table Full.\n");
+        absl::PrintF("Error: Table full.\n");
         break;
     }
   }

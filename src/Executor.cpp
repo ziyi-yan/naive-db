@@ -36,5 +36,5 @@ Executor::ExecuteResult Executor::execute_select(Statement st, Table* tbl) {
 }
 
 void Executor::printRow(Row row) {
-  absl::PrintF("%d\t%s\t%s\n", row.id, row.username, row.email);
+  absl::PrintF("(%d, %s, %s)\n", row.id, row.username, row.email);
 }
