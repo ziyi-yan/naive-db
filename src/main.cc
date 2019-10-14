@@ -18,6 +18,8 @@ MetaCommandResult doMetaCommand(std::string line) {
 }
 
 int main() {
+  Table tbl;
+
   std::string line;
   while (true) {
     // prompt for user input
@@ -41,12 +43,22 @@ int main() {
     switch (st.prepare(line)) {
       case Statement::PrepareResult::Success:
         break;
+      case Statement::PrepareResult::SyntaxError:
+        absl::PrintF("Syntax error. Could not parse statement.\n");
+        continue;
       case Statement::PrepareResult ::UnrecognizedStatement:
         absl::PrintF("Unrecognized keyword at start of '%s'.\n", line);
         continue;
     }
 
     Executor ex;
-    ex.execute(st);
+    switch (ex.execute(st, &tbl)) {
+      case Executor::ExecuteResult::Success:
+        absl::PrintF("Executed.\n");
+        break;
+      case Executor::ExecuteResult::TableFull:
+        absl::PrintF("Error: Table Full.\n");
+        break;
+    }
   }
 }
