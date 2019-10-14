@@ -31,6 +31,9 @@ For gracefully shutdown, type `.exit`.
 
 Under the project root directory, run
 ```
+$ # clone with the submodule
+$ git clone --recursive https://github.com/ziyi-yan/naive-db
+$ cd naive-db
 $ mkdir build && cd build
 $ cmake ..
 $ make
